@@ -52,3 +52,5 @@ next-env.d.ts
 !public/videos/hero.mp4
 !public/videos/README.md
 !public/videos/.gitkeep
+
+.vercel

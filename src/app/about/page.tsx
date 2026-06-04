@@ -344,7 +344,7 @@ export default function AboutPage() {
           </RevealSection>
           <RevealSection delay={1}>
             <p className="mt-6 text-center text-lg text-fitvilla-light/90">
-              Across all three locations — Sector 76 Noida, Sector 133 Noida, and Mayur Vihar Phase 1 — one standard remains consistent:
+              Across all three locations — Sector 76 Noida, Sector 133 Noida, and Mayur Vihar Phase 1 — one standard remains consistent
             </p>
           </RevealSection>
           <div className="mt-12 flex flex-wrap justify-center gap-4">
