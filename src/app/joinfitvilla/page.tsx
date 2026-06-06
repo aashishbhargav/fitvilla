@@ -10,6 +10,7 @@ import { Card } from "@/components/ui/Card";
 import { Input } from "@/components/ui/Input";
 import { Select } from "@/components/ui/Select";
 import { LOCATION_OPTIONS } from "@/lib/constants";
+import { getLeadFormValues, openLeadOnWhatsApp } from "@/lib/leadForm";
 import { freeTrialCta, leadFormHeading, siteName } from "@/content/site";
 
 const HEADER_LOGO = "/images/logo/fitvilla-logo.png";
@@ -72,6 +73,14 @@ export default function JoinFitvillaPage() {
     const gap = 16;
     const step = cardWidth + gap;
     el.scrollBy({ left: direction === "left" ? -step : step, behavior: "smooth" });
+  };
+
+  const handleLeadSubmit = (event: React.FormEvent<HTMLFormElement>, source: string) => {
+    event.preventDefault();
+    openLeadOnWhatsApp({
+      ...getLeadFormValues(event.currentTarget),
+      source,
+    });
   };
 
   useEffect(() => {
@@ -168,13 +177,11 @@ export default function JoinFitvillaPage() {
             </p>
             <form
               className="space-y-3"
-              onSubmit={(e) => {
-                e.preventDefault();
-                // Wire to your backend / form tool when ready
-              }}
+              onSubmit={(event) => handleLeadSubmit(event, "Join FitVilla hero form")}
             >
               <Input
                 id="hero-name"
+                name="name"
                 type="text"
                 placeholder="Your name"
                 required
@@ -182,6 +189,7 @@ export default function JoinFitvillaPage() {
               />
               <Input
                 id="hero-phone"
+                name="phone"
                 type="tel"
                 placeholder="Your phone number"
                 required
@@ -189,6 +197,7 @@ export default function JoinFitvillaPage() {
               />
               <Select
                 id="hero-location"
+                name="location"
                 options={LOCATION_OPTIONS}
                 required
                 className="w-full rounded-lg border border-white/20 bg-black/60 px-4 py-2.5 text-sm text-white focus:border-fitvilla-cyan focus:outline-none focus:ring-1 focus:ring-fitvilla-cyan"
@@ -624,13 +633,14 @@ export default function JoinFitvillaPage() {
 
               <form
                 className="space-y-4"
-                onSubmit={(e) => {
-                  e.preventDefault();
+                onSubmit={(event) => {
+                  handleLeadSubmit(event, "Join FitVilla popup form");
                   setShowPopup(false);
                 }}
               >
                 <Input
                   id="popup-name"
+                  name="name"
                   type="text"
                   placeholder="Your name"
                   required
@@ -638,6 +648,7 @@ export default function JoinFitvillaPage() {
                 />
                 <Input
                   id="popup-phone"
+                  name="phone"
                   type="tel"
                   placeholder="Your phone number"
                   required
@@ -645,6 +656,7 @@ export default function JoinFitvillaPage() {
                 />
                 <Select
                   id="popup-location"
+                  name="location"
                   options={LOCATION_OPTIONS}
                   required
                   className="w-full rounded-lg border border-white/20 bg-black/60 px-4 py-3 text-white focus:border-fitvilla-cyan focus:outline-none focus:ring-1 focus:ring-fitvilla-cyan"

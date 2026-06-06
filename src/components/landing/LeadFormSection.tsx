@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useCallback } from "react";
 import Image from "next/image";
 import { leadFormHeading, freeTrialCta } from "@/content/site";
 import { LOCATION_OPTIONS } from "@/lib/constants";
+import { openLeadOnWhatsApp, type LeadFormValues } from "@/lib/leadForm";
 import { Input } from "@/components/ui/Input";
 import { Select } from "@/components/ui/Select";
 
@@ -29,11 +30,15 @@ interface LeadFormSectionProps {
 }
 
 export function LeadFormSection({ id, formIdSuffix = "" }: LeadFormSectionProps) {
-  const [mounted, setMounted] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [roles, setRoles] = useState<number[]>([ROLES.previous, ROLES.current, ROLES.next]);
-
-  useEffect(() => setMounted(true), []);
+  const [form, setForm] = useState<LeadFormValues>({
+    name: "",
+    phone: "",
+    location: LOCATION_OPTIONS[0]?.value ?? "",
+    source: "Homepage free trial form",
+  });
+  const [whatsAppUrl, setWhatsAppUrl] = useState("");
 
   const go = useCallback((direction: 1 | -1) => {
     if (direction === 1) {
@@ -47,6 +52,11 @@ export function LeadFormSection({ id, formIdSuffix = "" }: LeadFormSectionProps)
 
   const suffix = formIdSuffix ? `-${formIdSuffix}` : "";
   const headingId = `lead-form-heading${suffix}`;
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setWhatsAppUrl(openLeadOnWhatsApp(form));
+  };
 
   return (
     <section
@@ -144,50 +154,66 @@ export function LeadFormSection({ id, formIdSuffix = "" }: LeadFormSectionProps)
             >
               {leadFormHeading}
             </h2>
-            {mounted ? (
-              <form
-                className="mt-8 rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm sm:p-8"
-                onSubmit={(e) => e.preventDefault()}
+            <form
+              className="mt-8 rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm sm:p-8"
+              onSubmit={handleSubmit}
+            >
+              <div className="space-y-5">
+                <Input
+                  label="Name"
+                  id={`name${suffix}`}
+                  name="name"
+                  type="text"
+                  placeholder="Your name"
+                  required
+                  value={form.name}
+                  onChange={(event) =>
+                    setForm((current) => ({ ...current, name: event.target.value }))
+                  }
+                  className="w-full rounded-lg border border-white/20 bg-black/50 px-4 py-3 text-white placeholder:text-fitvilla-muted focus:border-fitvilla-cyan focus:outline-none focus:ring-1 focus:ring-fitvilla-cyan"
+                />
+                <Input
+                  label="Phone"
+                  id={`phone${suffix}`}
+                  name="phone"
+                  type="tel"
+                  placeholder="Your phone number"
+                  required
+                  value={form.phone}
+                  onChange={(event) =>
+                    setForm((current) => ({ ...current, phone: event.target.value }))
+                  }
+                  className="w-full rounded-lg border border-white/20 bg-black/50 px-4 py-3 text-white placeholder:text-fitvilla-muted focus:border-fitvilla-cyan focus:outline-none focus:ring-1 focus:ring-fitvilla-cyan"
+                />
+                <Select
+                  label="Location"
+                  id={`location${suffix}`}
+                  name="location"
+                  options={LOCATION_OPTIONS}
+                  required
+                  value={form.location}
+                  onChange={(event) =>
+                    setForm((current) => ({ ...current, location: event.target.value }))
+                  }
+                  className="w-full rounded-lg border border-white/20 bg-black/50 px-4 py-3 text-white focus:border-fitvilla-cyan focus:outline-none focus:ring-1 focus:ring-fitvilla-cyan"
+                />
+              </div>
+              <button
+                type="submit"
+                className="mt-6 w-full rounded-full bg-fitvilla-cyan py-3.5 font-semibold text-black transition-all hover:bg-fitvilla-glow hover:shadow-[0_0_20px_rgba(45,212,228,0.35)] focus:outline-none focus:ring-2 focus:ring-fitvilla-cyan focus:ring-offset-2 focus:ring-offset-black"
               >
-                <div className="space-y-5">
-                  <Input
-                    label="Name"
-                    id={`name${suffix}`}
-                    type="text"
-                    placeholder="Your name"
-                    required
-                    className="w-full rounded-lg border border-white/20 bg-black/50 px-4 py-3 text-white placeholder:text-fitvilla-muted focus:border-fitvilla-cyan focus:outline-none focus:ring-1 focus:ring-fitvilla-cyan"
-                  />
-                  <Input
-                    label="Phone"
-                    id={`phone${suffix}`}
-                    type="tel"
-                    placeholder="Your phone number"
-                    required
-                    className="w-full rounded-lg border border-white/20 bg-black/50 px-4 py-3 text-white placeholder:text-fitvilla-muted focus:border-fitvilla-cyan focus:outline-none focus:ring-1 focus:ring-fitvilla-cyan"
-                  />
-                  <Select
-                    label="Location"
-                    id={`location${suffix}`}
-                    options={LOCATION_OPTIONS}
-                    required
-                    className="w-full rounded-lg border border-white/20 bg-black/50 px-4 py-3 text-white focus:border-fitvilla-cyan focus:outline-none focus:ring-1 focus:ring-fitvilla-cyan"
-                  />
-                </div>
-                <button
-                  type="submit"
-                  className="mt-6 w-full rounded-full bg-fitvilla-cyan py-3.5 font-semibold text-black transition-all hover:bg-fitvilla-glow hover:shadow-[0_0_20px_rgba(45,212,228,0.35)] focus:outline-none focus:ring-2 focus:ring-fitvilla-cyan focus:ring-offset-2 focus:ring-offset-black"
-                >
-                  {freeTrialCta}
-                </button>
-              </form>
-            ) : (
-              <div
-                className="mt-8 rounded-2xl border border-white/10 bg-white/5 p-6 sm:p-8"
-                style={{ minHeight: 220 }}
-                aria-hidden
-              />
-            )}
+                {freeTrialCta}
+              </button>
+              {whatsAppUrl && (
+                <p className="mt-4 text-center text-sm text-fitvilla-cyan">
+                  WhatsApp opened with your trial request. If it did not open,{" "}
+                  <a href={whatsAppUrl} target="_blank" rel="noreferrer" className="underline">
+                    tap here to send it
+                  </a>
+                  .
+                </p>
+              )}
+            </form>
           </div>
         </div>
       </div>
