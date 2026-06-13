@@ -12,12 +12,11 @@ import {
 import { ROUTES } from "@/lib/constants";
 import { scrollToLeadForm } from "@/lib/scroll";
 import type { HeroSettings } from "@/app/admin/_services/adminSettings";
+import { getVideoEmbed } from "@/lib/videoEmbed";
+import { heroPosterDefault, heroVideoDefault } from "@/content/heroMedia";
 
-const HERO_VIDEO_DEFAULT = "/videos/hero.mp4";
-const HERO_POSTER_DEFAULT = "/images/hero/hero-1.jpg"; /* from Drive: first image as poster/fallback */
-const ATHLETE_LEFT = "/images/hero/athlete-female.png";
-const ATHLETE_RIGHT = "/images/hero/athlete-male.png";
 const ADMIN_STORAGE_KEY = "fitvilla-admin-settings";
+const OLD_LOCAL_HERO_VIDEO = "/videos/hero.mp4";
 
 type AdminSettingsShape = {
   hero?: HeroSettings;
@@ -28,26 +27,36 @@ export function HeroSection() {
     siteTagline: defaultSiteTagline,
     heroHeadline: defaultHeroHeadline,
     heroSubtext: defaultHeroSubtext,
-    heroVideoUrl: HERO_VIDEO_DEFAULT,
-    heroPosterUrl: HERO_POSTER_DEFAULT,
+    heroVideoUrl: heroVideoDefault,
+    heroPosterUrl: heroPosterDefault,
   });
 
   useEffect(() => {
-    try {
-      if (typeof window === "undefined") return;
-      const raw = window.localStorage.getItem(ADMIN_STORAGE_KEY);
-      if (!raw) return;
-      const parsed = JSON.parse(raw) as AdminSettingsShape;
-      if (parsed.hero) {
-        setHero((prev) => ({
-          ...prev,
-          ...parsed.hero,
-        }));
+    const id = window.setTimeout(() => {
+      try {
+        if (typeof window === "undefined") return;
+        const raw = window.localStorage.getItem(ADMIN_STORAGE_KEY);
+        if (!raw) return;
+        const parsed = JSON.parse(raw) as AdminSettingsShape;
+        if (parsed.hero) {
+          setHero((prev) => ({
+            ...prev,
+            ...parsed.hero,
+            heroVideoUrl:
+              parsed.hero?.heroVideoUrl === OLD_LOCAL_HERO_VIDEO
+                ? heroVideoDefault
+                : parsed.hero?.heroVideoUrl || prev.heroVideoUrl,
+          }));
+        }
+      } catch {
+        // ignore parse/storage errors, fall back to defaults
       }
-    } catch {
-      // ignore parse/storage errors, fall back to defaults
-    }
+    }, 0);
+
+    return () => window.clearTimeout(id);
   }, []);
+
+  const heroEmbed = getVideoEmbed(hero.heroVideoUrl, { controls: false });
 
   return (
     <section
@@ -56,16 +65,39 @@ export function HeroSection() {
     >
       {/* Video background */}
       <div className="absolute inset-0">
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          className="h-full w-full object-cover"
-          poster={hero.heroPosterUrl || HERO_POSTER_DEFAULT}
-        >
-          <source src={hero.heroVideoUrl || HERO_VIDEO_DEFAULT} type="video/mp4" />
-        </video>
+        {heroEmbed ? (
+          <>
+            <Image
+              src={hero.heroPosterUrl || heroPosterDefault}
+              alt=""
+              fill
+              className="object-cover"
+              priority
+              sizes="100vw"
+              unoptimized
+            />
+            <iframe
+              src={heroEmbed.src}
+              title="FitVilla hero background video"
+              className="absolute left-1/2 top-1/2 h-[56.25vw] min-h-full w-[177.78vh] min-w-full -translate-x-1/2 -translate-y-1/2"
+              allow="autoplay; fullscreen; picture-in-picture"
+              allowFullScreen
+              referrerPolicy="no-referrer"
+              aria-hidden
+            />
+          </>
+        ) : (
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="h-full w-full object-cover"
+            poster={hero.heroPosterUrl || heroPosterDefault}
+          >
+            <source src={hero.heroVideoUrl || heroVideoDefault} type="video/mp4" />
+          </video>
+        )}
         {/* Fallback gradient when video missing or loading */}
         <div
           className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/85"

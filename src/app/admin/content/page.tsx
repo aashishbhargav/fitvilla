@@ -112,14 +112,14 @@ export default function AdminHeroContentPage() {
             <div className="mt-4 space-y-3 text-xs">
               <div>
                 <label className="mb-1 block text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-400">
-                  Hero Background Video URL
+                  Hero Background Video URL (Vimeo or MP4)
                 </label>
                 <input
                   type="text"
                   value={settings.hero.heroVideoUrl}
                   onChange={(e) => setHero({ heroVideoUrl: e.target.value })}
                   className="w-full rounded-xl border border-white/10 bg-black/60 px-3 py-2 text-[11px] text-white outline-none ring-fitvilla-cyan/40 placeholder:text-slate-500 focus:border-fitvilla-cyan/60 focus:ring-2"
-                  placeholder="/videos/hero.mp4"
+                  placeholder="https://vimeo.com/123456789 or /videos/hero.mp4"
                 />
               </div>
               <div>
@@ -141,4 +141,3 @@ export default function AdminHeroContentPage() {
     </div>
   );
 }
-

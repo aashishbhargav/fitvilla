@@ -5,14 +5,7 @@ import Image from "next/image";
 import { getVideoCards } from "@/content/videoCards";
 import type { VideoCardItem } from "@/content/videoCards";
 import { Card } from "@/components/ui/Card";
-
-const isDriveEmbed = (src: string) => src.includes("drive.google.com");
-
-/** Drive embed URL with autoplay; no external link to open Drive. */
-function getDriveEmbedSrc(src: string) {
-  const sep = src.includes("?") ? "&" : "?";
-  return `${src}${sep}autoplay=1`;
-}
+import { getVideoEmbed } from "@/lib/videoEmbed";
 
 const ADMIN_STORAGE_KEY = "fitvilla-admin-settings";
 
@@ -24,7 +17,7 @@ function VideoCard({ card, onPlay }: { card: VideoCardItem; onPlay: () => void }
   const [videoError, setVideoError] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const useIframe = isDriveEmbed(card.videoSrc);
+  const embed = getVideoEmbed(card.videoSrc, { controls: false });
 
   return (
     <button
@@ -32,26 +25,26 @@ function VideoCard({ card, onPlay }: { card: VideoCardItem; onPlay: () => void }
       onClick={onPlay}
       onMouseEnter={() => {
         setIsHovered(true);
-        if (!useIframe && videoRef.current) videoRef.current.play().catch(() => {});
+        if (!embed && videoRef.current) videoRef.current.play().catch(() => {});
       }}
       onMouseLeave={() => {
         setIsHovered(false);
-        if (!useIframe && videoRef.current) videoRef.current.pause();
+        if (!embed && videoRef.current) videoRef.current.pause();
       }}
       className="experience-fitvilla-rectangle relative block w-full overflow-hidden bg-black text-left focus:outline-none focus:ring-2 focus:ring-fitvilla-cyan focus:ring-inset"
     >
       {videoError ? (
         <Image src={card.imageSrc} alt="" fill className="object-cover" sizes="33vw" unoptimized />
-      ) : useIframe ? (
+      ) : embed ? (
         <>
           {!isHovered ? (
             <Image src={card.imageSrc} alt="" fill className="object-cover" sizes="33vw" unoptimized />
           ) : (
             <iframe
-              src={getDriveEmbedSrc(card.videoSrc)}
+              src={embed.src}
               title={card.title}
               className="absolute inset-0 h-full w-full object-cover"
-              allow="autoplay; fullscreen"
+              allow="autoplay; fullscreen; picture-in-picture"
               allowFullScreen
               referrerPolicy="no-referrer"
             />
@@ -100,22 +93,22 @@ function PopupVideo({
   popupVideoRef: React.RefObject<HTMLVideoElement | null>;
 }) {
   const [videoError, setVideoError] = useState(false);
-  const useIframe = isDriveEmbed(card.videoSrc);
+  const embed = getVideoEmbed(card.videoSrc);
 
   useEffect(() => {
-    if (!useIframe && !videoError && popupVideoRef.current) popupVideoRef.current.play().catch(() => {});
-  }, [card, videoError, popupVideoRef, useIframe]);
+    if (!embed && !videoError && popupVideoRef.current) popupVideoRef.current.play().catch(() => {});
+  }, [card, embed, videoError, popupVideoRef]);
 
   if (videoError) {
     return <Image src={card.imageSrc} alt="" fill className="object-contain" sizes="80vw" unoptimized />;
   }
-  if (useIframe) {
+  if (embed) {
     return (
       <iframe
-        src={getDriveEmbedSrc(card.videoSrc)}
+        src={embed.src}
         title={card.title}
         className="absolute inset-0 h-full w-full"
-        allow="autoplay; fullscreen"
+        allow="autoplay; fullscreen; picture-in-picture"
         allowFullScreen
         referrerPolicy="no-referrer"
       />
@@ -142,17 +135,21 @@ export function VideoCardsSection() {
   const popupVideoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
-    try {
-      if (typeof window === "undefined") return;
-      const raw = window.localStorage.getItem(ADMIN_STORAGE_KEY);
-      if (!raw) return;
-      const parsed = JSON.parse(raw) as AdminSettingsShape;
-      if (parsed.videos && parsed.videos.length > 0) {
-        setCards(parsed.videos);
+    const id = window.setTimeout(() => {
+      try {
+        if (typeof window === "undefined") return;
+        const raw = window.localStorage.getItem(ADMIN_STORAGE_KEY);
+        if (!raw) return;
+        const parsed = JSON.parse(raw) as AdminSettingsShape;
+        if (parsed.videos && parsed.videos.length > 0) {
+          setCards(parsed.videos);
+        }
+      } catch {
+        // ignore parse/storage errors, fall back to defaults
       }
-    } catch {
-      // ignore parse/storage errors, fall back to defaults
-    }
+    }, 0);
+
+    return () => window.clearTimeout(id);
   }, []);
 
   return (

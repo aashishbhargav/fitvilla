@@ -73,7 +73,7 @@ export default function AdminVideosPage() {
               </div>
               <div>
                 <label className="mb-1 block text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-400">
-                  Video URL (MP4 or Google Drive embed)
+                  Video URL (Vimeo, MP4, or Google Drive embed)
                 </label>
                 <input
                   type="text"
@@ -100,4 +100,3 @@ export default function AdminVideosPage() {
     </div>
   );
 }
-
