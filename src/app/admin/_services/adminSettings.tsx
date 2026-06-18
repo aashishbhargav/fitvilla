@@ -6,6 +6,7 @@ import {
   heroHeadline as defaultHeroHeadline,
   heroSubtext as defaultHeroSubtext,
 } from "@/content/site";
+import { getAllLocations, type LocationSlug } from "@/content/locations";
 import { videoCards as defaultVideoCards, type VideoCardItem } from "@/content/videoCards";
 import { heroPosterDefault, heroVideoDefault } from "@/content/heroMedia";
 
@@ -19,6 +20,7 @@ export type HeroSettings = {
 
 export type AdminSettings = {
   hero: HeroSettings;
+  locationImages: Record<LocationSlug, string>;
   videos: VideoCardItem[];
   scheduleNote: string;
 };
@@ -34,6 +36,9 @@ const DEFAULT_SETTINGS: AdminSettings = {
     heroVideoUrl: heroVideoDefault,
     heroPosterUrl: heroPosterDefault,
   },
+  locationImages: Object.fromEntries(
+    getAllLocations().map((location) => [location.slug, location.imagePath])
+  ) as Record<LocationSlug, string>,
   videos: defaultVideoCards,
   scheduleNote: "Update class schedule details or special announcements here.",
 };
@@ -44,6 +49,7 @@ type UseAdminSettingsResult = {
   settings: AdminSettings | null;
   status: AdminStatus;
   setHero: (patch: Partial<HeroSettings>) => void;
+  setLocationImage: (slug: LocationSlug, imagePath: string) => void;
   setVideo: (id: string, patch: Partial<VideoCardItem>) => void;
   setScheduleNote: (note: string) => void;
 };
@@ -70,6 +76,10 @@ export function useAdminSettings(): UseAdminSettingsResult {
               parsed.hero?.heroVideoUrl === OLD_LOCAL_HERO_VIDEO
                 ? heroVideoDefault
                 : parsed.hero?.heroVideoUrl || DEFAULT_SETTINGS.hero.heroVideoUrl,
+          },
+          locationImages: {
+            ...DEFAULT_SETTINGS.locationImages,
+            ...(parsed.locationImages ?? {}),
           },
           videos: parsed.videos?.length ? parsed.videos : DEFAULT_SETTINGS.videos,
           scheduleNote: parsed.scheduleNote ?? DEFAULT_SETTINGS.scheduleNote,
@@ -101,6 +111,19 @@ export function useAdminSettings(): UseAdminSettingsResult {
   const setHero = (patch: Partial<HeroSettings>) =>
     setSettings((prev) => (prev ? { ...prev, hero: { ...prev.hero, ...patch } } : prev));
 
+  const setLocationImage = (slug: LocationSlug, imagePath: string) =>
+    setSettings((prev) =>
+      prev
+        ? {
+            ...prev,
+            locationImages: {
+              ...prev.locationImages,
+              [slug]: imagePath,
+            },
+          }
+        : prev
+    );
+
   const setVideo = (id: string, patch: Partial<VideoCardItem>) =>
     setSettings((prev) =>
       prev
@@ -114,5 +137,5 @@ export function useAdminSettings(): UseAdminSettingsResult {
   const setScheduleNote = (note: string) =>
     setSettings((prev) => (prev ? { ...prev, scheduleNote: note } : prev));
 
-  return { settings, status, setHero, setVideo, setScheduleNote };
+  return { settings, status, setHero, setLocationImage, setVideo, setScheduleNote };
 }

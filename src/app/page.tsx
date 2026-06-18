@@ -5,6 +5,7 @@
 import { AnnouncementBanner } from "@/components/landing/AnnouncementBanner";
 import { HeroSection } from "@/components/landing/HeroSection";
 import { ClassesWeekPreview } from "@/components/landing/ClassesWeekPreview";
+import { TestimonialVideosSection } from "@/components/landing/TestimonialVideosSection";
 import { VideoCardsSection } from "@/components/landing/VideoCardsSection";
 import { FeaturesSection } from "@/components/landing/FeaturesSection";
 import { LocationsSection } from "@/components/landing/LocationsSection";
@@ -23,6 +24,9 @@ export default function HomePage() {
       <HeroSection />
       <ScrollReveal>
         <ClassesWeekPreview />
+      </ScrollReveal>
+      <ScrollReveal>
+        <TestimonialVideosSection />
       </ScrollReveal>
       <ScrollReveal>
         <VideoCardsSection />

@@ -1,9 +1,12 @@
  "use client";
 
+import Image from "next/image";
 import { useAdminSettings } from "../_services/adminSettings";
+import { getAllLocations, type LocationSlug } from "@/content/locations";
 
 export default function AdminHeroContentPage() {
-  const { settings, status, setHero } = useAdminSettings();
+  const { settings, status, setHero, setLocationImage } = useAdminSettings();
+  const locations = getAllLocations();
 
   if (!settings) {
     return (
@@ -17,9 +20,9 @@ export default function AdminHeroContentPage() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-xl font-semibold tracking-tight text-white">Hero Section Content</h1>
+          <h1 className="text-xl font-semibold tracking-tight text-white">Homepage Content</h1>
           <p className="mt-1 text-xs text-slate-300">
-            Update the main headline and hero text that visitors see at the top of the website.
+            Update the hero text and the location card images shown on the homepage.
           </p>
         </div>
         <span
@@ -136,6 +139,79 @@ export default function AdminHeroContentPage() {
               </div>
             </div>
           </div>
+        </div>
+      </div>
+
+      <div className="rounded-3xl border border-white/10 bg-slate-950/80 p-6 shadow-xl shadow-black/40 backdrop-blur-xl">
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <div>
+            <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-fitvilla-cyan">
+              Location Card Images
+            </div>
+            <p className="mt-1 text-xs text-slate-300">
+              Change the pictures below “Choose Your Nearest Fitvilla”. Use a local path like
+              /images/locations/sector-76.jpg or a full image URL.
+            </p>
+          </div>
+        </div>
+
+        <div className="mt-5 grid gap-4 md:grid-cols-3">
+          {locations.map((location) => {
+            const slug = location.slug as LocationSlug;
+            const imagePath =
+              settings.locationImages[slug] || location.imagePath;
+
+            return (
+              <div
+                key={location.slug}
+                className="overflow-hidden rounded-2xl border border-white/10 bg-black/40 text-xs"
+              >
+                <div className="relative aspect-[4/3] bg-slate-900">
+                  {imagePath ? (
+                    <Image
+                      src={imagePath}
+                      alt=""
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      unoptimized
+                    />
+                  ) : (
+                    <div className="flex h-full w-full items-center justify-center text-slate-500">
+                      No image
+                    </div>
+                  )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/75 to-transparent" />
+                  <div className="absolute bottom-0 left-0 right-0 p-3">
+                    <p className="font-semibold text-white">{location.name}</p>
+                    <p className="mt-0.5 text-[11px] text-slate-300">
+                      {location.shortDescription}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="space-y-2 p-3">
+                  <label className="block text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-400">
+                    Image URL
+                  </label>
+                  <input
+                    type="text"
+                    value={imagePath}
+                    onChange={(e) => setLocationImage(slug, e.target.value)}
+                    className="w-full rounded-lg border border-white/10 bg-black/50 px-2 py-1.5 text-[11px] text-white outline-none ring-fitvilla-cyan/40 placeholder:text-slate-500 focus:border-fitvilla-cyan/60 focus:ring-2"
+                    placeholder={location.imagePath}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setLocationImage(slug, location.imagePath)}
+                    className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-[11px] font-medium text-slate-200 transition hover:border-fitvilla-cyan/50 hover:text-fitvilla-cyan"
+                  >
+                    Reset default
+                  </button>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>

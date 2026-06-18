@@ -2,12 +2,45 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 import { locationsHeadline } from "@/content/site";
-import { getAllLocations } from "@/content/locations";
+import { getAllLocations, type LocationSlug } from "@/content/locations";
 import { ROUTES } from "@/lib/constants";
 
+const ADMIN_STORAGE_KEY = "fitvilla-admin-settings";
+
+type AdminSettingsShape = {
+  locationImages?: Partial<Record<LocationSlug, string>>;
+};
+
 export function LocationsSection() {
-  const locations = getAllLocations();
+  const [locations, setLocations] = useState(() => getAllLocations());
+
+  useEffect(() => {
+    const id = window.setTimeout(() => {
+      try {
+        const raw = window.localStorage.getItem(ADMIN_STORAGE_KEY);
+        if (!raw) return;
+        const parsed = JSON.parse(raw) as AdminSettingsShape;
+        if (!parsed.locationImages) return;
+
+        setLocations(
+          getAllLocations().map((location) => {
+            const slug = location.slug as LocationSlug;
+
+            return {
+              ...location,
+              imagePath: parsed.locationImages?.[slug] || location.imagePath,
+            };
+          })
+        );
+      } catch {
+        // ignore parse/storage errors, fall back to defaults
+      }
+    }, 0);
+
+    return () => window.clearTimeout(id);
+  }, []);
 
   return (
     <section
@@ -34,6 +67,7 @@ export function LocationsSection() {
                   fill
                   className="object-cover"
                   sizes="(max-width: 768px) 100vw, 33vw"
+                  unoptimized
                   onError={(e) => {
                     const t = e.target as HTMLImageElement;
                     t.style.display = "none";

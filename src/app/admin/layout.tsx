@@ -6,7 +6,7 @@ import type { ReactNode } from "react";
 import { useEffect, useState } from "react";
 
 const navItems = [
-  { href: "/admin/content", label: "Hero Content" },
+  { href: "/admin/content", label: "Homepage Content" },
   { href: "/admin/videos", label: "Experience Videos" },
   { href: "/admin/schedule", label: "Schedule & Notes" },
   { href: "/admin/calendar", label: "Class Calendar" },
@@ -229,5 +229,4 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
     </main>
   );
 }
-
 
