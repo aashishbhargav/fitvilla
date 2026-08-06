@@ -1,11 +1,28 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { freeTrialCta } from "@/content/site";
 import { scrollToLeadForm } from "@/lib/scroll";
 import { Card } from "@/components/ui/Card";
 
-const PLACEHOLDER_COUNT = 3;
+const transformations = [
+  {
+    name: "Sanchi Malhotra",
+    summary: "9 kg fat loss · 6 months",
+    imageSrc: "/images/transformations/sanchi-malhotra.jpg",
+  },
+  {
+    name: "Atharva Pusalkar",
+    summary: "5 kg fat loss · 6 months",
+    imageSrc: "/images/transformations/atharva-pusalkar.jpg",
+  },
+  {
+    name: "Raj Dubey",
+    summary: "12 month transformation",
+    imageSrc: "/images/transformations/raj-dubey.jpg",
+  },
+];
 
 export function TransformationsSection() {
 
@@ -22,18 +39,24 @@ export function TransformationsSection() {
           Real Members. Real Results.
         </h2>
         <div className="mt-12 grid gap-6 sm:grid-cols-3">
-          {Array.from({ length: PLACEHOLDER_COUNT }, (_, i) => (
+          {transformations.map((transformation) => (
             <Card
-              key={i}
+              key={transformation.name}
               className="overflow-hidden rounded-xl border border-white/10 bg-white/5 transition-all hover:border-fitvilla-cyan/30 hover:bg-white/[0.08]"
             >
-              <div className="aspect-[3/4] bg-fitvilla-deep">
-                <div className="flex h-full items-center justify-center text-fitvilla-muted/50 text-sm">
-                  Before / After
-                </div>
+              <div className="relative aspect-[4/5] bg-fitvilla-deep">
+                <Image
+                  src={transformation.imageSrc}
+                  alt={`${transformation.name} FitVilla transformation`}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 640px) 100vw, 33vw"
+                  unoptimized
+                />
               </div>
               <div className="p-4 text-center text-sm text-fitvilla-light/80">
-                Transformation {i + 1}
+                <h3 className="font-bold text-white">{transformation.name}</h3>
+                <p className="mt-1">{transformation.summary}</p>
               </div>
             </Card>
           ))}
