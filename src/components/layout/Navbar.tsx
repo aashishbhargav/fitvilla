@@ -17,14 +17,14 @@ export function Navbar() {
     <nav
       aria-label="Main navigation"
       className={`fixed top-0 left-0 right-0 z-50 border-b backdrop-blur-md transition-all duration-300 ${
-        scrolled ? "border-white/10 bg-black/90 py-1.5" : "border-white/5 bg-black/50 py-2.5"
+        scrolled ? "border-white/10 bg-black/95 py-1.5" : "border-white/10 bg-black/75 py-2"
       }`}
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-4 sm:px-6 lg:px-8">
         <Link
           href="/"
-          className={`logo-no-bg flex shrink-0 items-center justify-center focus:outline-none focus:ring-2 focus:ring-fitvilla-cyan/50 focus:ring-offset-2 focus:ring-offset-black transition-all duration-300 ${
-            scrolled ? "h-8 sm:h-9" : "h-10 sm:h-11 md:h-12"
+          className={`logo-no-bg navbar-logo flex shrink-0 items-center justify-center rounded-full px-2 focus:outline-none focus:ring-2 focus:ring-fitvilla-cyan/50 focus:ring-offset-2 focus:ring-offset-black transition-all duration-300 ${
+            scrolled ? "h-11 sm:h-12" : "h-14 sm:h-16 md:h-[72px]"
           }`}
           aria-label={`${siteName} home`}
         >

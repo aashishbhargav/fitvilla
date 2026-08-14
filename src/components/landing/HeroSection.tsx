@@ -100,11 +100,11 @@ export function HeroSection() {
         )}
         {/* Fallback gradient when video missing or loading */}
         <div
-          className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/85"
+          className="absolute inset-0 bg-gradient-to-b from-black/45 via-black/35 to-black/65"
           aria-hidden
         />
         <div
-          className="absolute inset-0 bg-gradient-to-r from-fitvilla-deep/40 to-transparent"
+          className="absolute inset-0 bg-gradient-to-r from-fitvilla-deep/20 to-transparent"
           aria-hidden
         />
       </div>
