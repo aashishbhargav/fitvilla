@@ -104,9 +104,9 @@ const standardPillars = [
 ];
 
 const teamMembers = [
-  { name: "Dr Tarun", role: "Head of Operations" },
-  { name: "Shivam Chauhan", role: "Business Operations Manager" },
-  { name: "Manoj Pant", role: "Club Manager 133" },
+  { name: "Dr Tarun", role: "Head of Operations", imagePath: "/images/about/team/dr-tarun.jpg" },
+  { name: "Shivam Chauhan", role: "Business Operations Manager", imagePath: "/images/about/team/shivam-chauhan.jpg" },
+  { name: "Manoj Pant", role: "Club Manager 133", imagePath: "/images/about/team/manoj-pant.jpg" },
   { name: "Varun Rathode", role: "Club Manager 76" },
   { name: "Akshay Rathi", role: "Club Manager Mayur Vihar" },
   { name: "Naveen Bhist", role: "Fitness Manager 133" },
@@ -420,8 +420,23 @@ export default function AboutPage() {
             {teamMembers.map((member, i) => (
               <RevealSection key={member.name} delay={(i % 4) as 0 | 1 | 2 | 3}>
                 <div className="group relative h-72 w-[280px] shrink-0 overflow-hidden rounded-2xl border border-fitvilla-cyan/30 bg-gradient-to-br from-fitvilla-deep/80 via-black to-black shadow-[0_0_0_rgba(45,212,228,0)] transition-all duration-500 hover:-translate-y-1 hover:border-fitvilla-cyan/70 hover:shadow-[0_0_36px_rgba(45,212,228,0.25)]">
-                  <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(45,212,228,0.20),transparent_45%),radial-gradient(circle_at_80%_80%,rgba(45,212,228,0.12),transparent_40%)] transition-all duration-500 group-hover:scale-110" />
-                  <div className="pointer-events-none absolute inset-0 bg-black/10 backdrop-blur-0 transition-all duration-500 group-hover:bg-black/35 group-hover:backdrop-blur-md" />
+                  {member.imagePath ? (
+                    <>
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={member.imagePath}
+                        alt={member.name}
+                        className="absolute inset-0 h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
+                        loading="lazy"
+                      />
+                      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black via-black/35 to-transparent transition-colors duration-500 group-hover:from-black/95 group-hover:via-black/55" />
+                    </>
+                  ) : (
+                    <>
+                      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(45,212,228,0.20),transparent_45%),radial-gradient(circle_at_80%_80%,rgba(45,212,228,0.12),transparent_40%)] transition-all duration-500 group-hover:scale-110" />
+                      <div className="pointer-events-none absolute inset-0 bg-black/10 backdrop-blur-0 transition-all duration-500 group-hover:bg-black/35 group-hover:backdrop-blur-md" />
+                    </>
+                  )}
 
                   {/* Name stays visible at all times */}
                   <div className="absolute inset-x-0 bottom-0 z-20 p-5">
