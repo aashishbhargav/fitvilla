@@ -323,7 +323,7 @@ export default function JoinFitvillaPage() {
                     sizes="(max-width: 768px) 100vw, 33vw"
                     unoptimized
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent" />
                   <div className="absolute bottom-0 left-0 right-0 p-4">
                     <h3 className="text-lg font-semibold text-white">{loc.name}</h3>
                     <p className="mt-1 text-xs text-fitvilla-light/90">{loc.shortDescription}</p>

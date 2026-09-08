@@ -73,7 +73,7 @@ export function LocationsSection() {
                     t.style.display = "none";
                   }}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent" />
                 <div className="absolute bottom-0 left-0 right-0 p-4">
                   <h3 className="text-xl font-semibold text-white">{loc.name}</h3>
                   <p className="text-sm text-fitvilla-light/90">
