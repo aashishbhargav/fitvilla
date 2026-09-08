@@ -19,7 +19,7 @@ import { ScrollReveal } from "@/components/ui/ScrollReveal";
 
 export default function HomePage() {
   return (
-    <main className="pt-16">
+    <main className="pt-[74px] sm:pt-[82px] md:pt-[89px]">
       <AnnouncementBanner />
       <HeroSection />
       <ScrollReveal>

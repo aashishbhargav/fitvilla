@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { navLinks, ctaLabel, ctaHref } from "@/content/nav";
 import { siteName } from "@/content/site";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavbarScrolled } from "@/hooks/useScrollPosition";
 
 const LOGO = "/images/logo/fitvilla-logo.png";
@@ -12,9 +12,26 @@ const LOGO = "/images/logo/fitvilla-logo.png";
 export function Navbar() {
   const [open, setOpen] = useState(false);
   const scrolled = useNavbarScrolled();
+  const navRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const nav = navRef.current;
+    if (!nav) return;
+    const updateHeight = () => {
+      document.documentElement.style.setProperty("--navbar-height", `${nav.getBoundingClientRect().height}px`);
+    };
+    updateHeight();
+    const observer = new ResizeObserver(updateHeight);
+    observer.observe(nav);
+    return () => {
+      observer.disconnect();
+      document.documentElement.style.removeProperty("--navbar-height");
+    };
+  }, []);
 
   return (
     <nav
+      ref={navRef}
       aria-label="Main navigation"
       className={`fixed top-0 left-0 right-0 z-50 border-b backdrop-blur-md transition-all duration-300 ${
         scrolled ? "border-black/10 bg-white py-1.5 shadow-sm" : "border-black/10 bg-white py-2"
