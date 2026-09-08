@@ -107,7 +107,7 @@ const teamMembers = [
   { name: "Dr Tarun", role: "Head of Operations", imagePath: "/images/about/team/dr-tarun.jpg" },
   { name: "Shivam Chauhan", role: "Business Operations Manager", imagePath: "/images/about/team/shivam-chauhan.jpg" },
   { name: "Manoj Pant", role: "Club Manager 133", imagePath: "/images/about/team/manoj-pant.jpg" },
-  { name: "Varun Rathode", role: "Club Manager 76" },
+  { name: "Varun Rathode", role: "Club Manager 76", imagePath: "/images/about/team/varun.webp" },
   { name: "Akshay Rathi", role: "Club Manager Mayur Vihar" },
   { name: "Naveen Bhist", role: "Fitness Manager 133" },
   { name: "Anshu Majumdar", role: "Fitness Manager 76" },
