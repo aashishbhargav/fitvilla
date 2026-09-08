@@ -98,8 +98,8 @@ export default function JoinFitvillaPage() {
       <header
         className={`fixed left-0 right-0 top-0 z-50 flex items-center justify-between gap-3 px-3 py-2 transition-all duration-300 sm:gap-4 sm:px-6 sm:py-3 lg:px-8 ${
           headerScrolled
-            ? "bg-black/85 shadow-[0_4px_24px_rgba(0,0,0,0.4)] backdrop-blur-xl border-b border-white/5"
-            : "bg-transparent"
+            ? "bg-white shadow-sm border-b border-black/10"
+            : "bg-white border-b border-black/10"
         }`}
       >
         <div className="flex items-center gap-3">
@@ -116,11 +116,11 @@ export default function JoinFitvillaPage() {
               onError={() => setLogoError(true)}
             />
           ) : (
-            <span className="text-lg font-bold tracking-tight text-white sm:text-xl">
+            <span className="text-lg font-bold tracking-tight text-black sm:text-xl">
               FitVilla
             </span>
           )}
-          <span className="hidden text-sm text-fitvilla-muted sm:inline">
+          <span className="hidden text-sm text-neutral-600 sm:inline">
             Luxury fitness · Noida & Delhi
           </span>
         </div>
@@ -145,7 +145,7 @@ export default function JoinFitvillaPage() {
             priority
             unoptimized
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/75 via-black/85 to-black" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/50 to-black" />
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_30%,rgba(45,212,228,0.12),transparent_55%)]" />
         </div>
 
@@ -257,7 +257,7 @@ export default function JoinFitvillaPage() {
                   className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-6 transition-all hover:border-fitvilla-cyan/40 hover:bg-white/[0.08] hover:shadow-[0_0_30px_rgba(45,212,228,0.08)]"
                 >
                   {imageSrc && (
-                    <div className="pointer-events-none absolute inset-0 opacity-30">
+                    <div className="pointer-events-none absolute inset-0">
                       {imageSrc.includes("drive.google.com") ? (
                         <img
                           src={imageSrc}
@@ -277,7 +277,7 @@ export default function JoinFitvillaPage() {
                           loading="lazy"
                         />
                       )}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent" />
                     </div>
                   )}
                   <div className="relative flex flex-col items-center gap-3 text-center sm:items-start sm:text-left">

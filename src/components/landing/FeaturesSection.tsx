@@ -87,7 +87,7 @@ function FeatureCard({
               <img
                 src={imageSrc}
                 alt=""
-                className="absolute inset-0 h-full w-full object-cover blur-[6px] transition-transform duration-500 group-hover:scale-110"
+                className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
                 loading="lazy"
                 referrerPolicy="no-referrer"
               />
@@ -96,13 +96,13 @@ function FeatureCard({
                 src={imageSrc}
                 alt=""
                 fill
-                className="object-cover blur-[6px] transition-transform duration-500 group-hover:scale-110"
+                className="object-cover transition-transform duration-500 group-hover:scale-110"
                 sizes="(max-width: 768px) 100vw, 33vw"
                 unoptimized
                 loading="lazy"
               />
             )}
-            <div className="absolute inset-0 bg-black/55 transition-colors duration-300 group-hover:bg-black/45" aria-hidden />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/45 to-black/20" aria-hidden />
           </div>
         )}
         <div className="relative flex flex-1 flex-col items-center justify-center text-center">

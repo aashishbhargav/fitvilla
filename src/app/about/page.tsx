@@ -189,7 +189,7 @@ export default function AboutPage() {
             sizes="100vw"
             fetchPriority="high"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/75 via-black/85 to-black" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/50 to-black" />
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_30%,rgba(45,212,228,0.12),transparent_55%)]" />
         </div>
         <div className="relative z-10 mx-auto max-w-4xl">
@@ -429,7 +429,7 @@ export default function AboutPage() {
                         className="absolute inset-0 h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
                         loading="lazy"
                       />
-                      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black via-black/35 to-transparent transition-colors duration-500 group-hover:from-black/95 group-hover:via-black/55" />
+                      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
                     </>
                   ) : (
                     <>

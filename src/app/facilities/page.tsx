@@ -28,7 +28,7 @@ export default function FacilitiesPage() {
             sizes="100vw"
             fetchPriority="high"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/75 via-black/85 to-black" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/50 to-black" />
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_30%,rgba(45,212,228,0.12),transparent_55%)]" />
         </div>
         <div className="relative z-10 mx-auto max-w-4xl">
@@ -85,7 +85,7 @@ export default function FacilitiesPage() {
                         <img
                           src={imageSrc}
                           alt=""
-                          className="absolute inset-0 h-full w-full object-cover opacity-40 transition-all duration-500 group-hover:scale-105 group-hover:opacity-50"
+                          className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                           loading="lazy"
                           referrerPolicy="no-referrer"
                         />
@@ -94,13 +94,13 @@ export default function FacilitiesPage() {
                           src={imageSrc}
                           alt=""
                           fill
-                          className="object-cover opacity-40 transition-all duration-500 group-hover:scale-105 group-hover:opacity-50"
+                          className="object-cover transition-transform duration-500 group-hover:scale-105"
                           sizes="(max-width: 768px) 100vw, 33vw"
                           unoptimized
                           loading="lazy"
                         />
                       )}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent" />
                     </div>
                   )}
                   <div className="relative flex flex-col items-center p-6 text-center sm:p-8">
